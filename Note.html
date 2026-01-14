@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        
+
+    <style>
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+
+        * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#main {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    background-color: #81ecec;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#addBtn {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    background-color: #2d3436;
+    color: white;
+    padding: 10px;
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
+}
+
+.note {
+    width: 400px;
+    height: 400px;
+    background-color: white;
+    margin: 15px;
+    margin-top: 55px;
+}
+
+.tool {
+    width: 100%;
+    background-color: #2d3436;
+    color: white;
+    padding: 5px;
+    display: flex;
+    justify-content: end;
+}
+
+.tool i {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.note textarea {
+    border: none;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.note textarea:focus {
+    border: 0;
+    outline: 0;
+}
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <button id="addBtn">
+        <i class="fas fa-plus"></i>
+        Add Note
+    </button>
+    <div id="main">
+        <!-- <div class="note">
+            <div class="tool">
+                <i class="fas fa-save" id="save"></i>
+                <i class="fas fa-trash" id="dt"></i>
+            </div>
+            <textarea></textarea> 
+        </div>-->
+        </div>
+      
+        
+</body>
+<script>
+    let Add_note = document.getElementById('addBtn');
+    let main = document.querySelector("#main");
+
+    let notes = function(){
+        let noteA = document.querySelectorAll('.note textarea');
+        console.log(noteA)
+        let data = [];
+        noteA.forEach((note1)=>{
+            data.push(note1.value)
+        });
+        console.log(data)
+        if(data.length === 0){
+            localStorage.removeItem("noteA")
+        } else {
+            localStorage.setItem("noteA",JSON.stringify(data))
+        }
+    }//storage on lacal host
+
+  
+
+    Add_note.addEventListener('click',function(){
+        additem()
+        
+    });
+
+    let additem= function(text=""){
+        
+        let note = document.createElement('div');
+        note.classList.add("note")
+
+
+        note.innerHTML = `
+    <div class="tool">
+        <i class="fas fa-save" id="save"></i>
+        <i class="fas fa-trash" id="dt"></i>
+    </div>
+    <textarea> ${text}</textarea>
+    </div>`; // Inner All html ata hai isme
+
+    main.appendChild(note)
+
+    let Delet = note.querySelector('#dt')
+    Delet.addEventListener('click',function(){
+        
+        note.remove()
+        notes()
+
+        if(document.querySelectorAll(".note").length===0){
+            additem();
+        }
+
+    }); // Delet ka all logic ye hai
+
+    let save = note.querySelector('#save');
+
+    save.addEventListener('click',function(){
+        notes()
+    });
+     // save main function hai ye
+     //Auto sava
+     noteq.querySelector("#save").addEventListener("focusout",function(){
+        save()
+     });
+
+    };
+
+      // Printing local stroge note
+    let local = function(){
+            let Isnote = JSON.parse(localStorage.getItem("noteA"))
+            if(Isnote === null){
+                additem()
+            } else {
+                Isnote.forEach((note)=>{
+                    additem(note)
+                })
+            }
+          
+        }
+
+    local()
+   
+//console.log(Isnote)
+</script>
+
+</html>
