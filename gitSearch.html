@@ -137,7 +137,7 @@ input:focus {
 <script>
     const url_Api = "https://api.github.com/users/";
     const main = document.querySelector('main')
-    const serchBox = document.querySelector('#search')
+    const searchBox = document.querySelector('#search')
 
     const user = async (username)=>{
         const response = await fetch(url_Api+username)
@@ -189,20 +189,23 @@ input:focus {
         });
     };
 
-    const formSubmit =()=>{
-        if(serchBox.value !=""){
-            user(serchBox.value);
-            serchBox.value=""
+    let formSubmit =()=>{
+        if(searchBox.value.trim() !=""){
+            user(searchBox.value.trim());
+            console.log(searchBox.value)
+            searchBox.value=""
         }
-        return False
+        return false
+        
     }
 
-    serchBox.addEventListener("focusout",function(){
+    searchBox.addEventListener("focusout",function(){
         formSubmit()
-        
+
     })
 
-    // user("Anantgupta123") chai-aur-react  CodeWithHarry CodeSagarOfficial ai-tools
+    // user("Anantgupta123")
+    //  chai-aur-react  CodeWithHarry CodeSagarOfficial ai-tools
 
 </script>
 
