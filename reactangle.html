@@ -28,12 +28,49 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: rgb(149, 52, 52);
+            
 
         }
     </style>
 </head>
 <body>
     <h1>Reactangle Mover</h1>
-    <div class="reactangle"></div>
+    <div class="reactangle" id="box"></div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
+ integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" 
+ crossorigin="anonymous"referrerpolicy="no-referrer"></script>
+<script>
+    
+    let reactangle = document.querySelector('div')
+    let body = document.querySelector('body')
+
+    reactangle.addEventListener("mousemove",(lock)=>{
+        // console.log(reactangle.getBoundingClientRect())
+
+        let location = reactangle.getBoundingClientRect();
+
+        let curent = lock.clientX - location.left;
+        
+
+        if(curent<location.width/2){
+           
+            let color = gsap.utils.mapRange(0,250,255,0,curent);
+            box.style.backgroundColor= `rgb(${color},0,0)`
+           
+            
+
+
+        } else if(curent>location.width/2){
+            
+            
+            let color = gsap.utils.mapRange(250,401,0,255,curent);
+            box.style.backgroundColor = `rgb(0,0,${color})`
+
+        }
+    
+    })
+    // console.log(gsap.utils.mapRange(0,250,255,0,0))
+</script>
 </html>
