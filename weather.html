@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wther App</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family:'Poppins',sans-serif;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #222;
+            
+        }
+        .card{
+            width: 90%;
+            max-width: 470px;
+            background:linear-gradient(135deg,#00feba,#5b548a);
+            color: #fff;
+            margin: 100px auto 0;
+            padding: 40px 35px;
+            text-align: center;
+        }
+        .search{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+
+        }
+        .search input{
+            border: 0;
+            outline: 0;
+            background: #ebfffc;
+            color: #555;
+            padding: 10px 25px;
+            height: 60px;
+            border-radius: 30px;
+            flex: 1;
+            margin-right: 16px;
+            font-size: 18px;
+        }
+        .search button{
+            border: 0;
+            outline: 0;
+            background: #ebfffc;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+
+        }
+        .weather_icon{
+            width: 170px;
+            margin: 30px;
+
+        }
+        .weather h1{
+            font-size: 80px;
+            font-weight: 500;
+        }
+        .weather h2{
+            font-size: 45px;
+            font-weight: 400;
+            margin-top:-10px ;
+        }
+        .details{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-top: 50px;
+        }
+        .col{
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+        .col img{
+            width: 40px;
+            margin-right: 10px;
+
+        }
+        .humidity,.wind{
+            font-size: 28px;
+            margin-top: -6px;
+
+        }
+        .weather{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Search your city" 
+            spellcheck="false">
+            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div><div class="weather" id="wet">
+        <img src="../gallery/rain.png" alt="" class="weather_icon" id="condition">
+        <h1 class="temp" id="temp">22°c</h1>
+        <h2 class="city" id="city1">New Yourk</h2>
+         <div class="details">
+            <div class="col">
+                <!-- <img src="../gallery/cloud.png" alt="humidity" id="image"> -->
+                <div>
+                    <p class="humidity" id="humidity">50%</p>
+                    <p>Humidity</p>
+                </div>
+            </div>
+            <div class="col">
+                <img src="../gallery/wind.png" alt="Wind">
+                <div>
+                    <p class="wind" id="wind">15km/hr</p>
+                    <p>Wind Speed</p>
+                </div>
+            </div>
+         </div>
+    </div>
+    </div>
+    
+    
+</body>
+
+<script>
+    //fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+    //bbe73469e3b373fc024cda00a29ed52b=== wrong
+    // const apiKey = "bbe73469e3b373fc024cda00a29ed52b";  === my original api
+    // const city = "Delhi";
+    //const api = "863242cfb2b1d357e6093d9a4df19a4b"; == by this video
+    //const apiurl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}";
+    // Upeer one in this video api url
+
+    const api = "bbe73469e3b373fc024cda00a29ed52b";
+    const apiUrl =  "https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+
+    
+
+    //Select all the dom charecters
+    const city1 = document.getElementById('city1');
+    const temp = document.getElementById('temp');
+    const humidity = document.getElementById('humidity')
+    const wind = document.getElementById('wind')
+
+    //search
+    const input = document.querySelector('input')
+    const btn = document.querySelector('button')
+    
+    // Image box
+    const image = document.getElementById('condition')
+
+    // display
+    const display = document.getElementById('wet')
+    
+   
+    async function checkWeather(city){
+
+        const response = await fetch(apiUrl + city + `&appid=${api}`);
+        const data = await response.json()
+        console.log(data)
+
+        city1.innerHTML = data.name;
+        temp.innerHTML =Math.floor( data.main.temp)+"°c";
+        humidity.innerHTML = data.main.humidity+"%";
+        wind.innerHTML = data.wind.speed+"km/hr";
+
+        if(data.weather[0].main === "Clouds"){
+            image.src="../gallery/cloud.png"
+        }
+         else if(data.weather[0].main === "Clear"){
+            image.src="../gallery/sun.png"
+        }
+         else if(data.weather[0].main === "Rain"){
+            image.src="../gallery/rain.png"
+        }
+         else if(data.weather[0].main === "Drizzle"){
+            image.src="../gallery/weather.png"
+        }
+         else if(data.weather[0].main === "Mist"){
+            image.src="../gallery/sunday.png"
+        }
+
+        display.style.display ="block";
+
+
+        
+    }
+    
+
+    btn.addEventListener('click',
+        ()=>{
+            checkWeather(input.value);
+
+
+        }
+    )
+
+</script>
+</html>
