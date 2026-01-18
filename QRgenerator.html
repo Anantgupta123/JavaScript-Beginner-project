@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Generator</title>
+    <style>
+        /* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    min-height: 100vh;
+    background: linear-gradient(135deg,#4f46e5,#9333ea,#ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Title */
+h1{
+    position: absolute;
+    top: 30px;
+    font-size: 2.5rem;
+    color: white;
+    letter-spacing: 1px;
+    animation: glow 2s infinite alternate;
+}
+
+/* Card */
+.container{
+    width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: pop 0.6s ease;
+}
+
+/* Text */
+.container p{
+    color: white;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Input */
+.container input{
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Button */
+.container button{
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg,#ec4899,#f43f5e);
+    color: white;
+    font-size: 22px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.container button:hover{
+    transform: scale(1.07);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
+.container button:active{
+    transform: scale(0.95);
+}
+
+/* QR Image */
+#QR{
+    margin-top: 20px;
+    padding: 10px;
+    background: white;
+    border-radius: 16px;
+    animation: zoom 0.6s ease;
+}
+
+/* Animations */
+@keyframes pop{
+    from{
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes zoom{
+    from{
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes glow{
+    from{
+        text-shadow: 0 0 10px #fff;
+    }
+    to{
+        text-shadow: 0 0 20px #ec4899;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h1>QR Generator</h1>
+    <div class="container" id="main">
+        <p>Enter your text or Url</p>
+        <input type="text" placeholder="Text or Url">
+        <button id="btn">Generate</button>
+
+    </div>
+</body>
+<script>
+    let input = document.querySelector('input');
+    let btn = document.getElementById('btn');
+    let set = document.getElementById('main')
+
+    let api = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="
+
+     btn.addEventListener('click',function(){
+        let qr = api+input.value
+
+        let get = document.createElement('img');
+        get.id = "QR";
+        get.src = qr
+        set.appendChild(get);
+        console.log(qr)
+
+
+    })
+</script>
+</html>
