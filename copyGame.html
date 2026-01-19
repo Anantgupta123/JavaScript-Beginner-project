@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Game</title>
+    <style>
+         *{margin: 0; padding: 0;box-sizing: border-box}
+
+        :root{
+            --bg-main:#464646;
+            --bg-card:#2D2727;
+            --border-color: #efc745;
+        }
+
+        body{
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           flex-direction: column;
+           gap: 5rem;
+           min-height: 100vh;   /* 👈 bas ye change */
+           background-color: var(--bg-main);
+        }
+
+
+
+        h1{
+            color: #fff;
+            font-family: "Lexend Deca Light";
+            font-size: 4rem;
+        }
+          span{
+            color: var(--border-color);
+        }
+        #card-section{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-gap: 2rem;
+        }
+         /* .card{
+           width: 10rem;
+            height: 10rem;
+            background-color: var(--bg-card);
+           background-size: contain;
+           border-radius: .6rem;
+           box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+           padding: 2rem;
+        }
+        .card_selected{
+           border: .2rem solid var(--border-color);
+        } */
+        .card_match{
+           border: .2rem solid purple;
+        } 
+
+        .card {
+            position: relative;
+            transition: all .4s linear;
+            transform-style: preserve-3d;
+        }
+
+        .card,
+        .back-card,
+        .front-card {
+            height: 10rem;
+            width: 10rem;
+        }
+
+        .back-card,
+        .front-card {
+            position: absolute;
+            backface-visibility: hidden;
+        }
+        .front-card {
+            background: var(--border-color);
+            background-size: contain;
+            border-radius: .6rem;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            padding: 2rem;
+        }
+        .back-card {
+            transform: rotateY(180deg);
+            /*background-color: #6589F9;*/
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            padding: 2rem;
+        }
+        .card_selected{
+            transform: rotateY(180deg);
+        }
+        .card_match .front-card{
+            background-color: var(--bg-card);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Match The <span>Images</span></h1>
+   
+<section id="card-section"></section>
+
+    
+</body>
+<script>
+
+     let cardsArray = [
+        {
+            'name': 'CSS',
+            'img': '../gallery/cloud.png',
+        },
+        {
+            'name': 'HTML',
+            'img': '../gallery/sun.png',
+        },
+        {
+            'name': 'jQuery',
+            'img':'../gallery/rain.png',
+        },
+        {
+            'name': 'JS',
+            'img': '../gallery/humidity.png',
+        },
+        {
+            'name': 'Node',
+            'img': '../gallery/sunday.png',
+        },
+        {
+            'name': 'Python',
+            'img': '../gallery/wind.png',
+        }
+    ];
+    //humidity.png , sunday.png, rain-day.png
+
+    let parentDiv = document.querySelector('#card-section');
+
+    // This Lower One is 2 step
+    let gameCard =cardsArray.concat(cardsArray)
+
+    // let shuffledChild = Array.from(gameCard).short(()=>0.5-Math.random());
+
+    // let myNumbers = (array)=>{
+    //     for(let i = array.length-1;i>0;i--){
+            
+    //         let j = Math.floor(Math.random()*(i+1));
+
+    //         let temp = array[i];
+    //         array[i] = array[i];
+    //         array[j] = temp; 
+    //     }
+    //     return array
+    // }
+
+    // let shuffledChild = myNumbers(gameCard);
+    let shuffledChild = Array.from(gameCard).sort(() => 0.5 - Math.random());
+
+    let clickCount = 0;
+    let firstCard = "";
+    let secondCard ="";
+
+    let card_matches = ()=>{
+        let card_set = document.querySelectorAll('.card_selected');
+
+        card_set.forEach((curElem)=>{
+            curElem.classList.add('card_match')
+        })
+    }
+
+    let resetGame =()=>{
+         firstCard = "";
+         secondCard ="";
+         clickCount = 0;
+
+        let card_sele= document.querySelectorAll('.card_selected');
+
+        card_sele.forEach((curElem)=>{
+            curElem.classList.remove('card_selected')
+        })
+
+
+     }
+
+    //4th step 
+    parentDiv.addEventListener('click',function(){
+        let curCard = event.target;
+
+        clickCount++;
+        if(clickCount<3){
+            if(clickCount===1){
+                firstCard = curCard.parentNode.dataset.name;
+                 curCard.parentNode.classList.add('card_selected');
+            } else{
+                secondCard = curCard.parentNode.dataset.name;
+                 curCard.parentNode.classList.add('card_selected');
+            }
+
+            if(firstCard !== "" && secondCard !== ""){
+                if(firstCard === secondCard){
+                   setTimeout(()=>{
+                    card_matches()
+                    resetGame()
+                   },1000)
+                } else{
+                    setTimeout(()=>{resetGame()},1000)
+                }
+            }
+            
+        };
+       
+
+        if(curCard.id ==="card-section"){
+            return false
+        };
+        
+        
+    });
+
+
+  // lower loop is step 1
+
+     for(let i=0;i<shuffledChild.length;i++){
+
+        let childDiv = document.createElement('div');
+
+        childDiv.classList.add('card') ;
+        childDiv.dataset.name = shuffledChild[i].name;
+        // childDiv.style.backgroundImage = `url(${shuffledChild[i].img})`;
+
+        
+
+        const front_div = document.createElement('div');
+        front_div.classList.add('front-card')
+
+
+        const back_div = document.createElement('div');
+        back_div.classList.add('back-card')
+        back_div.style.backgroundImage = `url(${shuffledChild[i].img})`;
+
+
+        parentDiv.appendChild(childDiv);
+        childDiv.appendChild(front_div);
+        childDiv.appendChild(back_div)
+
+
+         
+    };
+    parentDiv.addEventListener('click',function(){
+        let curCard = event.target;
+
+        curCard.classList.add('.card-section');
+
+    })
+
+
+</script>
+</html>
