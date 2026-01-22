@@ -414,7 +414,7 @@ Object.keys(presets).forEach((presetName)=>{
     filtersContainer.innerHTML=""
     createFilter()
     
-    })
+    });
     
         
     
