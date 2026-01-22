@@ -138,5 +138,6 @@ canvas{
     display: flex;
     flex-wrap: wrap;
     gap: var(--gutter-md);
-    
+    font-size: large;
+
 }
